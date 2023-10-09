@@ -1,0 +1,8 @@
+01 - How To Set Up MinIO Object Storage Server in Standalone Mode on Ubuntu 20.04
+  https://www.digitalocean.com/community/tutorials/how-to-set-up-minio-object-storage-server-in-standalone-mode-on-ubuntu-20-04
+
+02 - A Complete Guide to Install Minio Server and Client on Ubuntu 22.04
+  https://linuxhint.com/guide-install-minio-server-client-ubuntu/
+
+03 - How to create a single minio server on Ubuntu 22.04 server and also set the domain with lets encrypt ssl
+  https://tenten.co/insight/dev/install-minio-server-on-ubuntu-2204/
