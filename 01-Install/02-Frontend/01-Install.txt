@@ -26,6 +26,7 @@
     sudo a2enmod proxy_http &&
     sudo a2enmod proxy_wstunnel &&
     sudo a2enmod ssl &&
+    sudo a2ensite api-minio &&
     sudo a2ensite minio
 
   Verify is everything is correct and restart apache.
