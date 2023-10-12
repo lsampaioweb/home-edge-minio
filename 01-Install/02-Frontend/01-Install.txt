@@ -1,0 +1,48 @@
+01 - Copy all the necessary files to the server.
+  mkdir -p ~/minio/02-Frontend/
+  rsync -avh -e ssh 01-Install/02-Frontend/files/ lsampaio-minio-team@edge-minio-01.homelab:~/minio/02-Frontend/files/
+  rsync -avh -e ssh /opt/certificates/edge-minio-01.homelab/{*.crt,*.key} lsampaio-minio-team@edge-minio-01.homelab:~/minio/02-Frontend/files/
+
+02 - Install and setup Apache
+  sudo apt install -y apache2 ssl-cert
+
+  Disable used things.
+    sudo a2dissite 000-default.conf &&
+    sudo rm /etc/apache2/sites-available/*
+
+  Adjust the permissions.
+    sudo mkdir -p /etc/minio/web/ &&
+    sudo mv ~/minio/02-Frontend/files/{*.crt,*.key} /etc/minio/web/ &&
+    sudo chown -R www-data:minio-user /etc/minio/web &&
+    sudo chmod 640 /etc/minio/web/*.key
+
+  Copy the conf file.
+    sudo mv ~/minio/02-Frontend/files/minio.conf /etc/apache2/sites-available/
+    sudo chown www-data. /etc/apache2/sites-available/*.conf
+
+  Enable necessary modules.
+    sudo a2enmod rewrite &&
+    sudo a2enmod proxy &&
+    sudo a2enmod proxy_http &&
+    sudo a2enmod ssl &&
+    sudo a2ensite minio
+
+  Verify is everything is correct and restart apache.
+  sudo apache2ctl configtest
+  sudo systemctl restart apache2
+
+  Check the opened ports.
+    sudo netstat -tulpn | grep LISTEN
+
+03 - Allow the port(s) in the UFW.
+  sudo ufw allow http comment 'Unsecure MinIO WebGui' &&
+  sudo ufw allow https/tcp comment 'Secure MinIO WebGui'
+
+  # Only the HTTP and HTTPS ports will be allowed.
+  # 9000 is the default port that the MinIO server listens on.
+  # 9001 is the recommended port for accessing the MinIO Console.
+  # sudo ufw allow 9000:9001/tcp
+
+04 - Access minio Dashboard.
+  Minio-S3-API: https://api.edge-minio-01.homelab
+  Minio-Console: https://edge-minio-01.homelab

@@ -1,0 +1,5 @@
+Problem:
+  WARNING: Host local has more than 2 drives of set. A host failure will result in data becoming unavailable.
+
+Solution:
+  There is nothing to do now. I am using a single server. So this will be the point of failure.

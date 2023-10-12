@@ -1,0 +1,7 @@
+Problem:
+  Variable MINIO_VOLUMES not set in /etc/default/minio
+
+Solution:
+  sudo nano /etc/default/minio
+  Add the minio at the end. It was missing.
+  MINIO_VOLUMES="/mnt/data/disk{1...4}/minio"

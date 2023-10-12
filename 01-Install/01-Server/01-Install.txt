@@ -1,0 +1,73 @@
+01 - Prepare the disk that will contain the Minio's data.
+  Create the partition
+    sudo gdisk /dev/sdb
+    o (as in Other)
+    n
+    w
+
+  Create a Physical Volume (PV)
+    sudo pvcreate /dev/sdb1
+      Se der erro:
+      sudo wipefs -a /dev/sdb1
+
+  Create a Volume Group (VG)
+    sudo vgcreate miniodata-vg /dev/sdb1
+
+  Create a Logical Volume Management (LVM)
+    sudo lvcreate -n miniodata-lv -l 100%FREE miniodata-vg
+
+  Create a filesystem on the LV.
+    sudo mkfs.ext4 /dev/miniodata-vg/miniodata-lv
+
+  Create the folder
+    sudo mkdir -p /mnt/data
+
+  Mount the LVM even after reboots
+    sudo nano /etc/fstab
+    # <file system> <mount point> <type> <options> <dump>  <pass>
+    /dev/miniodata-vg/miniodata-lv /mnt/data ext4 defaults,noatime 0 2
+
+  Test:
+    sudo mount -a
+    or
+    sudo mount /dev/miniodata-vg/miniodata-lv /mnt/data
+
+02 - Copy all the necessary files to the server.
+  mkdir -p ~/minio/01-Server/
+  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-01.homelab:~/minio/01-Server/files/
+
+03 - Download the MinIO server’s latest .deb package
+  Link: https://min.io/download#/linux
+
+  # Server
+  wget https://dl.min.io/server/minio/release/linux-amd64/minio_20231007150738.0.0_amd64.deb &&
+  sudo dpkg -i minio_20231007150738.0.0_amd64.deb
+
+04 - Creating the MinIO User, Group, Data Directory, and Environment File.
+  # The -r flag instructs the command to make the group a system group.
+  sudo groupadd -r minio-user
+
+  Create the user that the MinIO server will run as.
+  # The -M flag instructs the command not to create a home directory for the user.
+  # The -r flag creates a system user.
+  # The -g flag assigns the user to its primary group.
+  sudo useradd -M -r -g minio-user minio-user
+
+  Create the data directory where MinIO will store all its files.
+  sudo mkdir -p /mnt/data &&
+  sudo mkdir -p /mnt/data/disk1 &&
+  sudo mkdir -p /mnt/data/disk2 &&
+  sudo mkdir -p /mnt/data/disk3 &&
+  sudo mkdir -p /mnt/data/disk4
+
+  Give ownership of the data directory to the MinIO user and group.
+  sudo chown -R minio-user:minio-user /mnt/data
+
+  Move MinIO’s environment file:
+  sudo mv ~/minio/01-Server/files/minio /etc/default/minio &&
+  sudo chown minio-user:minio-user /etc/default/minio
+
+05 — Starting the MinIO Server
+  sudo systemctl start minio &&
+  sudo systemctl enable minio &&
+  sudo systemctl status minio
