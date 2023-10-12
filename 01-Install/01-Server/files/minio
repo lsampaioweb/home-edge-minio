@@ -2,3 +2,7 @@ MINIO_VOLUMES="/mnt/data/disk{1...4}/minio"
 MINIO_OPTS="--console-address :9001"
 MINIO_ROOT_USER="edge-minio-01-admin"
 MINIO_ROOT_PASSWORD="Keychain: "edge-minio-01-admin""
+# Console
+MINIO_BROWSER_REDIRECT_URL="https://edge-minio-01.homelab"
+# S3-API
+MINIO_SERVER_URL="https://api.edge-minio-01.homelab"

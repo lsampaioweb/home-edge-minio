@@ -11,6 +11,7 @@
   mcli --autocompletion
   source .profile
 
-  mcli --insecure alias set myminio/ https://your-server-ip:9000 minioadmin minioadmin
-  or
-  sudo nano ~/.mcli/config.json
+  mcli alias set local http://127.0.0.1:9000
+  mcli admin info local
+
+  nano ~/.mcli/config.json

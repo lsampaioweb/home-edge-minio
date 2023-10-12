@@ -1,0 +1,11 @@
+Server Insecure       : Disabled
+Server Address        : edge-ldap-01.homelab:636
+
+Lookup Bind DN        : cn=ldap-reader-minio,ou=people,dc=homelab
+Lookup Bind Password  : Keychain: "edge-minio-01-ldap-reader"
+
+User DN Search Base   : dc=homelab
+User DN Search Filter : (cn=%s)
+
+Group Search Base DN  : ou=groups,dc=homelab
+Group Search Filter   : (&(objectclass=groupofnames)(member=%d))
