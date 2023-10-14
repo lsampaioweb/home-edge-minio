@@ -6,3 +6,6 @@
 
 03 - How to create a single minio server on Ubuntu 22.04 server and also set the domain with lets encrypt ssl
   https://tenten.co/insight/dev/install-minio-server-on-ubuntu-2204/
+
+04 - Minio Bucket Policy Notes
+  https://blog.nikhilbhardwaj.in/2020/02/25/minio-bucket-policy/

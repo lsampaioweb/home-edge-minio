@@ -1,0 +1,2 @@
+01 - Create the bucket
+  mcli mb local/macbook-luciano

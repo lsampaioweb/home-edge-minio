@@ -1,0 +1,78 @@
+01 - Create the file with the permissions.
+nano restic-backup.txt
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:GetBucketLocation",
+                "s3:ListBucket"
+            ],
+            "Resource": [
+                "arn:aws:s3:::macbook-luciano"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:DeleteObject",
+                "s3:GetObject",
+                "s3:PutObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::macbook-luciano/*"
+            ]
+        }
+    ]
+}
+
+02 - Create the policy in your minio instance.
+  mcli admin policy create local restic-backup restic-backup.txt
+
+# 03 - Associate the policy with a group or user
+#  mcli idp ldap policy attach local restic-backup --group='cn=minio-team,ou=groups,dc=homelab'
+#  mcli idp ldap policy attach local restic-backup --user='cn=lsampaio-minio-team,ou=people,dc=homelab'
+
+03 - Create an Access Key and Token and associate the policy with it.
+  mcli admin user svcacct add --policy "restic-backup.txt" --name restic-backup local "lsampaio-minio-team"
+    Expected output:
+      Access Key: ???4PVMLIYPX????????
+      Secret Key: ???4DjokGdUU6d2M2+A21F9P15MQxK?????????
+      Expiration: no-expiry
+
+  # Execute this command if you want to create a short lived Access Key. I am not using like this.
+    curl -X POST https://api.edge-minio-01.homelab -d "Action=AssumeRoleWithLDAPIdentity&LDAPUsername=lsampaio-minio-team&LDAPPassword=PASSWORD-HERE&Version=2011-06-15" | xmllint --format -
+
+    # It is necessary to install xmllint.
+      sudo apt install libxml2-utils
+
+  # List all Access Keys of one user.
+  mcli admin user svcacct list local "cn=lsampaio-minio-team,ou=people,dc=homelab"
+
+  # Get details about the Access Key.
+  mcli admin user svcacct info local <AccessKey>
+
+  # Remove an Access Key.
+  mcli admin user svcacct rm local <AccessKey>
+
+04 - Save the secrets in the Keychain (MacOS) ou Secret Tool(Ubuntu).
+  MacOS:
+    security add-generic-password -a $USER -U -s "edge-minio-01-restic-backup" -j "edge-minio-01-restic-backup" -w
+    security find-generic-password -s "edge-minio-01-restic-backup" -w | tr -d '\n' | pbcopy
+
+    security add-generic-password -a $USER -U -s "edge-minio-01-restic-backup-access-key-id" -j "edge-minio-01-restic-backup-access-key-id" -w
+    security find-generic-password -s "edge-minio-01-restic-backup-access-key-id" -w | tr -d '\n' | pbcopy
+
+    security add-generic-password -a $USER -U -s "edge-minio-01-restic-backup-secret-access-key" -j "edge-minio-01-restic-backup-secret-access-key" -w
+    security find-generic-password -s "edge-minio-01-restic-backup-secret-access-key" -w | tr -d '\n' | pbcopy
+
+  Ubuntu:
+    secret-tool store --label="edge-minio-01-restic-backup" password edge-minio-01-restic-backup
+    secret-tool lookup password "edge-minio-01-restic-backup"
+
+    secret-tool store --label="edge-minio-01-restic-backup-access-key-id" password edge-minio-01-restic-backup-access-key-id
+    secret-tool lookup password "edge-minio-01-restic-backup-access-key-id"
+
+    secret-tool store --label="edge-minio-01-restic-backup-secret-access-key" password edge-minio-01-restic-backup-secret-access-key
+    secret-tool lookup password "edge-minio-01-restic-backup-secret-access-key"

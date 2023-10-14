@@ -1,20 +1,5 @@
 mcli idp ldap policy attach local consoleAdmin \
-  --group='cn=minio-admins,ou=groups,dc=homelab'
-
-mcli idp ldap policy attach local consoleAdmin \
   --group='cn=minio-team,ou=groups,dc=homelab'
 
 mcli idp ldap policy attach local consoleAdmin \
   --group='cn=minio-manager,ou=groups,dc=homelab'
-
-# mcli idp ldap policy attach local diagnostics \
-  --group='cn=???,ou=groups,dc=homelab'
-
-# mcli idp ldap policy attach local readonly \
-  --group='cn=???,ou=groups,dc=homelab'
-
-# mcli idp ldap policy attach local readwrite \
-  --group='cn=???,ou=groups,dc=homelab'
-
-# mcli idp ldap policy attach local writeonly \
-  --group='cn=???,ou=groups,dc=homelab'
