@@ -2,6 +2,7 @@
   Create the partition
     sudo gdisk /dev/sdb
     sudo gdisk /dev/sdc
+    sudo gdisk /dev/sdd
     o (as in Other)
     n
     w
@@ -9,14 +10,18 @@
   Create a Physical Volume (PV)
     sudo pvcreate /dev/sdb1
     sudo pvcreate /dev/sdc1
+    sudo pvcreate /dev/sdd1
       Se der erro:
       sudo wipefs -a /dev/sdb1
+      sudo wipefs -a /dev/sdc1
+      sudo wipefs -a /dev/sdd1
 
   Create a Volume Group (VG)
     sudo vgcreate miniodata-vg /dev/sdb1
 
     # Add extra disks to the VG
     sudo vgextend miniodata-vg /dev/sdc1
+    sudo vgextend miniodata-vg /dev/sdd1
 
   Create a Logical Volume Management (LVM)
     sudo lvcreate -n miniodata-lv -l 100%FREE miniodata-vg
