@@ -56,16 +56,16 @@ nano restic-backup.txt
   # Remove an Access Key.
   mcli admin user svcacct rm local <AccessKey>
 
-04 - Save the secrets in the Keychain (MacOS) ou Secret Tool(Ubuntu).
+04 - Save the secrets in the Keychain (MacOS) or in the Secret Tool(Ubuntu).
   MacOS:
     security add-generic-password -a $USER -U -s "edge-minio-01-restic-backup" -j "edge-minio-01-restic-backup" -w
-    security find-generic-password -s "edge-minio-01-restic-backup" -w | tr -d '\n' | pbcopy
+    security find-generic-password -s "edge-minio-01-restic-backup" -w
 
     security add-generic-password -a $USER -U -s "edge-minio-01-restic-backup-access-key-id" -j "edge-minio-01-restic-backup-access-key-id" -w
-    security find-generic-password -s "edge-minio-01-restic-backup-access-key-id" -w | tr -d '\n' | pbcopy
+    security find-generic-password -s "edge-minio-01-restic-backup-access-key-id" -w
 
     security add-generic-password -a $USER -U -s "edge-minio-01-restic-backup-secret-access-key" -j "edge-minio-01-restic-backup-secret-access-key" -w
-    security find-generic-password -s "edge-minio-01-restic-backup-secret-access-key" -w | tr -d '\n' | pbcopy
+    security find-generic-password -s "edge-minio-01-restic-backup-secret-access-key" -w
 
   Ubuntu:
     secret-tool store --label="edge-minio-01-restic-backup" password edge-minio-01-restic-backup
