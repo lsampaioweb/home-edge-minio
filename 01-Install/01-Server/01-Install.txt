@@ -1,20 +1,29 @@
 01 - Prepare the disk that will contain the Minio's data.
   Create the partition
     sudo gdisk /dev/sdb
+    sudo gdisk /dev/sdc
     o (as in Other)
     n
     w
 
   Create a Physical Volume (PV)
     sudo pvcreate /dev/sdb1
+    sudo pvcreate /dev/sdc1
       Se der erro:
       sudo wipefs -a /dev/sdb1
 
   Create a Volume Group (VG)
     sudo vgcreate miniodata-vg /dev/sdb1
 
+    # Add extra disks to the VG
+    sudo vgextend miniodata-vg /dev/sdc1
+
   Create a Logical Volume Management (LVM)
     sudo lvcreate -n miniodata-lv -l 100%FREE miniodata-vg
+
+    # Extend the extra space in the LVM.
+    sudo lvm lvextend -l +100%FREE /dev/miniodata-vg/miniodata-lv
+    sudo resize2fs -p /dev/mapper/miniodata--vg-miniodata--lv
 
   Create a filesystem on the LV.
     sudo mkfs.ext4 /dev/miniodata-vg/miniodata-lv
