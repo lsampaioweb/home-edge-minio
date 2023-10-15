@@ -6,3 +6,7 @@ MINIO_ROOT_PASSWORD="Keychain: "edge-minio-01-admin""
 MINIO_SERVER_URL="https://api.edge-minio-01.homelab"
 # Console
 MINIO_BROWSER_REDIRECT_URL="https://edge-minio-01.homelab"
+
+# Prometheus config
+MINIO_PROMETHEUS_URL="http://localhost:9090"
+MINIO_PROMETHEUS_JOB_ID="minio-job"
