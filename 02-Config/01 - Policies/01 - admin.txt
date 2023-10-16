@@ -1,5 +1,0 @@
-mc idp ldap policy attach local consoleAdmin \
-  --group='cn=minio-team,ou=groups,dc=homelab'
-
-mc idp ldap policy attach local consoleAdmin \
-  --group='cn=minio-manager,ou=groups,dc=homelab'
