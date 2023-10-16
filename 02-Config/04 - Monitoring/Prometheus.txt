@@ -1,29 +1,34 @@
-01 - The following command scrapes metrics for the MinIO cluster.
-  mcli admin prometheus generate local
+01 - Install Prometheus
+  sudo apt install -y prometheus
+
+02 - The following command scrapes metrics for the MinIO cluster.
+  mc admin prometheus generate local
 
   Output:
     scrape_configs:
-    - job_name: minio-job
+    - job_name: minio-01-job
       bearer_token: ?????
       metrics_path: /minio/v2/metrics/cluster
       scheme: http
       static_configs:
       - targets: ['127.0.0.1:9000']
 
-02 - The following command scrapes metrics for buckets on the MinIO Server.
-  mcli admin prometheus generate local bucket
+03 - The following command scrapes metrics for buckets on the MinIO Server.
+  mc admin prometheus generate local bucket
 
   Output:
     scrape_configs:
-    - job_name: minio-job-bucket
+    - job_name: minio-01-job-bucket
       bearer_token: ?????
       metrics_path: /minio/v2/metrics/bucket
       scheme: http
       static_configs:
       - targets: ['127.0.0.1:9000']
 
-03 - Install Prometheus
-  sudo apt install -y prometheus
+04 - Add the Output to the Prometheus config.
+  sudo nano /etc/prometheus/prometheus.yml
 
-04 - Start the Prometheus cluster using the configuration file:
-  prometheus --config.file=/etc/prometheus/prometheus.yml
+05 - Start and enable Prometheus.
+  sudo systemctl restart prometheus &&
+  sudo systemctl enable prometheus &&
+  sudo systemctl status prometheus

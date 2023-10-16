@@ -1,17 +1,16 @@
 01 - Download the MinIO server’s latest .deb package
   Link: https://min.io/download#/linux
 
-  mkdir ~/minio && cd ~/minio
-
   # Client
-  wget https://dl.min.io/client/mc/release/linux-amd64/mcli_20231004065256.0.0_amd64.deb
-  dpkg -i mcli_20231004065256.0.0_amd64.deb
+  sudo wget https://dl.min.io/client/mc/release/linux-amd64/mc &&
+  sudo chmod +x mc &&
+  sudo mv mc /usr/local/bin/
 
 02 - Initialize the client and enable autocompletion for your shell
-  mcli --autocompletion
+  mc --autocompletion
   source .profile
 
-  mcli alias set local http://127.0.0.1:9000
-  mcli admin info local
+  mc alias set local http://127.0.0.1:9000
+  mc admin info local
 
-  nano ~/.mcli/config.json
+  nano ~/.mc/config.json

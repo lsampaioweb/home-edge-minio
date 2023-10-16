@@ -1,61 +1,38 @@
 01 - Prepare the disk that will contain the Minio's data.
-  Create the partition
-    sudo gdisk /dev/sdb
-    sudo gdisk /dev/sdc
-    sudo gdisk /dev/sdd
-    o (as in Other)
-    n
-    w
-
-  Create a Physical Volume (PV)
-    sudo pvcreate /dev/sdb1
-    sudo pvcreate /dev/sdc1
-    sudo pvcreate /dev/sdd1
-      Se der erro:
-      sudo wipefs -a /dev/sdb1
-      sudo wipefs -a /dev/sdc1
-      sudo wipefs -a /dev/sdd1
-
-  Create a Volume Group (VG)
-    sudo vgcreate miniodata-vg /dev/sdb1
-
-    # Add extra disks to the VG
-    sudo vgextend miniodata-vg /dev/sdc1
-    sudo vgextend miniodata-vg /dev/sdd1
-
-  Create a Logical Volume Management (LVM)
-    sudo lvcreate -n miniodata-lv -l 100%FREE miniodata-vg
-
-    # Extend the extra space in the LVM.
-    sudo lvm lvextend -l +100%FREE /dev/miniodata-vg/miniodata-lv
-    sudo resize2fs -p /dev/mapper/miniodata--vg-miniodata--lv
-
-  Create a filesystem on the LV.
-    sudo mkfs.ext4 /dev/miniodata-vg/miniodata-lv
+  Create a filesystem.
+    sudo mkfs.xfs -f /dev/sdb -L disk1 &&
+    sudo mkfs.xfs -f /dev/sdc -L disk2 &&
+    sudo mkfs.xfs -f /dev/sdd -L disk3
 
   Create the folder
-    sudo mkdir -p /mnt/data
+    sudo mkdir -p /mnt/minio/disk1 &&
+    sudo mkdir -p /mnt/minio/disk2 &&
+    sudo mkdir -p /mnt/minio/disk3
 
   Mount the LVM even after reboots
     sudo nano /etc/fstab
-    # <file system> <mount point> <type> <options> <dump>  <pass>
-    /dev/miniodata-vg/miniodata-lv /mnt/data ext4 defaults,noatime 0 2
+    #<file system>  <mount point>     <type>  <options>         <dump>  <pass>
+    LABEL=disk1    /mnt/minio/disk1  xfs     defaults,noatime  0       2
+    LABEL=disk2    /mnt/minio/disk2  xfs     defaults,noatime  0       2
+    LABEL=disk3    /mnt/minio/disk3  xfs     defaults,noatime  0       2
 
   Test:
     sudo mount -a
-    or
-    sudo mount /dev/miniodata-vg/miniodata-lv /mnt/data
 
 02 - Copy all the necessary files to the server.
-  mkdir -p ~/minio/01-Server/
-  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-01.homelab:~/minio/01-Server/files/
+  mkdir -p ~/install-minio/01-Server/
+  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-01.homelab:~/install-minio/01-Server/files/ &&
+  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-02.homelab:~/install-minio/01-Server/files/
 
 03 - Download the MinIO server’s latest .deb package
   Link: https://min.io/download#/linux
 
-  # Server
-  wget https://dl.min.io/server/minio/release/linux-amd64/minio_20231007150738.0.0_amd64.deb &&
-  sudo dpkg -i minio_20231007150738.0.0_amd64.deb
+  sudo wget https://dl.min.io/server/minio/release/linux-amd64/minio &&
+  sudo chmod +x minio &&
+  sudo mv minio /usr/local/bin/ &&
+  sudo mkdir -p /etc/minio &&
+  sudo mkdir -p /var/log/minio &&
+  sudo touch /var/log/minio/minio.log
 
 04 - Creating the MinIO User, Group, Data Directory, and Environment File.
   # The -r flag instructs the command to make the group a system group.
@@ -67,21 +44,22 @@
   # The -g flag assigns the user to its primary group.
   sudo useradd -M -r -g minio-user minio-user
 
-  Create the data directory where MinIO will store all its files.
-  sudo mkdir -p /mnt/data &&
-  sudo mkdir -p /mnt/data/disk1 &&
-  sudo mkdir -p /mnt/data/disk2 &&
-  sudo mkdir -p /mnt/data/disk3 &&
-  sudo mkdir -p /mnt/data/disk4
+  Move MinIO’s environment file:
+    sudo mv ~/install-minio/01-Server/files/minio-01.conf /etc/minio/minio.conf
+    sudo mv ~/install-minio/01-Server/files/minio-02.conf /etc/minio/minio.conf
+
+    Edit the file and add the specific config for the VM.
 
   Give ownership of the data directory to the MinIO user and group.
-  sudo chown -R minio-user:minio-user /mnt/data
-
-  Move MinIO’s environment file:
-  sudo mv ~/minio/01-Server/files/minio /etc/default/minio &&
-  sudo chown minio-user:minio-user /etc/default/minio
+  sudo chown -R minio-user:minio-user /mnt/minio &&
+  sudo chown -R minio-user:minio-user /etc/minio &&
+  sudo chown -R minio-user:minio-user /var/log/minio
 
 05 — Starting the MinIO Server
+  Move MinIO’s environment file:
+    sudo mv ~/install-minio/01-Server/files/minio.service /usr/lib/systemd/system/minio.service
+
+  sudo systemctl daemon-reload
   sudo systemctl start minio &&
   sudo systemctl enable minio &&
   sudo systemctl status minio

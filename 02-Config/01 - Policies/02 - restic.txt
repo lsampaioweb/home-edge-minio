@@ -28,14 +28,14 @@ nano restic-backup.txt
 }
 
 02 - Create the policy in your minio instance.
-  mcli admin policy create local restic-backup restic-backup.txt
+  mc admin policy create local restic-backup restic-backup.txt
 
 # 03 - Associate the policy with a group or user
-#  mcli idp ldap policy attach local restic-backup --group='cn=minio-team,ou=groups,dc=homelab'
-#  mcli idp ldap policy attach local restic-backup --user='cn=lsampaio-minio-team,ou=people,dc=homelab'
+#  mc idp ldap policy attach local restic-backup --group='cn=minio-team,ou=groups,dc=homelab'
+#  mc idp ldap policy attach local restic-backup --user='cn=lsampaio-minio-team,ou=people,dc=homelab'
 
 03 - Create an Access Key and Token and associate the policy with it.
-  mcli admin user svcacct add --policy "restic-backup.txt" --name restic-backup local "lsampaio-minio-team"
+  mc admin user svcacct add --policy "restic-backup.txt" --name restic-backup local "lsampaio-minio-team"
     Expected output:
       Access Key: ???4PVMLIYPX????????
       Secret Key: ???4DjokGdUU6d2M2+A21F9P15MQxK?????????
@@ -48,13 +48,13 @@ nano restic-backup.txt
       sudo apt install libxml2-utils
 
   # List all Access Keys of one user.
-  mcli admin user svcacct list local "cn=lsampaio-minio-team,ou=people,dc=homelab"
+  mc admin user svcacct list local "cn=lsampaio-minio-team,ou=people,dc=homelab"
 
   # Get details about the Access Key.
-  mcli admin user svcacct info local <AccessKey>
+  mc admin user svcacct info local <AccessKey>
 
   # Remove an Access Key.
-  mcli admin user svcacct rm local <AccessKey>
+  mc admin user svcacct rm local <AccessKey>
 
 04 - Save the secrets in the Keychain (MacOS) or in the Secret Tool(Ubuntu).
   MacOS:

@@ -1,41 +1,41 @@
 Set a alias to the MinIO instance
-  mcli alias set local http://127.0.0.1:9000
-  mcli admin info local
+  mc alias set local http://127.0.0.1:9000
+  mc admin info local
 
 Restart MinIO.
-  mcli admin service restart local
+  mc admin service restart local
 
 List all policies.
-  mcli admin policy list local
+  mc admin policy list local
 
 Get the permissions of a policy.
-  mcli admin policy info local consoleAdmin
-  mcli admin policy info local consoleAdmin --policy-file newpolicy.json
-  mcli admin policy info local restic-backup
+  mc admin policy info local consoleAdmin
+  mc admin policy info local consoleAdmin --policy-file newpolicy.json
+  mc admin policy info local restic-backup
 
 Create a policy.
-  mcli admin policy create local policyName policyfile.json
+  mc admin policy create local policyName policyfile.json
 
 List all groups.
-  mcli admin group list local
+  mc admin group list local
 
 Get the details about a group.
-  mcli admin group info local cn=minio-admins,ou=groups,dc=homelab
-  mcli admin group info local cn=minio-manager,ou=groups,dc=homelab
-  mcli admin group info local cn=minio-team,ou=groups,dc=homelab
+  mc admin group info local cn=minio-admins,ou=groups,dc=homelab
+  mc admin group info local cn=minio-manager,ou=groups,dc=homelab
+  mc admin group info local cn=minio-team,ou=groups,dc=homelab
 
 List all users.
-  mcli admin user list local
+  mc admin user list local
 
 Get the details about an user.
-  mcli admin user info local cn=restic,ou=people,dc=homelab
+  mc admin user info local cn=restic,ou=people,dc=homelab
 
 Create a Bucket
-  mcli mb local/MyBucket
+  mc mb local/MyBucket
 
 Copy a file to the Bucket
   touch test.txt
-  mcli cp test.txt local/MyBucket
+  mc cp test.txt local/MyBucket
 
 List the contents of a Bucket
-  mcli ls local/MyBucket
+  mc ls local/MyBucket
