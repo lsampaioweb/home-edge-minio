@@ -3,3 +3,6 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+
+# Config files.
+04-Backup/*.zip

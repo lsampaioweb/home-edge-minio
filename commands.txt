@@ -39,3 +39,13 @@ Copy a file to the Bucket
 
 List the contents of a Bucket
   mc ls local/MyBucket
+
+Expire objects after a specified number of calendar days
+  mc ilm rule add --expire-days
+
+Transition objects to that tier after a specified number of calendar days
+  mc ilm rule add --transition-days
+
+Resynchronize the remote target
+  mc replicate resync
+
