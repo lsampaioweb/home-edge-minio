@@ -9,3 +9,9 @@
 
 04 - Minio Bucket Policy Notes
   https://blog.nikhilbhardwaj.in/2020/02/25/minio-bucket-policy/
+
+05 - Bucket Replication
+  https://min.io/docs/minio/linux/administration/bucket-replication.html
+
+06 - Object Lifecycle Management
+  https://min.io/docs/minio/linux/administration/object-management/object-lifecycle-management.html#minio-lifecycle-management-expiration
