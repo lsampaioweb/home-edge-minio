@@ -1,9 +1,9 @@
 01 - Copy all the necessary files to the server.
   mkdir -p ~/minio/02-Frontend/
-  rsync -avh -e ssh 01-Install/02-Frontend/files/ lsampaio-minio-team@edge-minio-01.homelab:~/minio/02-Frontend/files/ &&
-  rsync -avh -e ssh 01-Install/02-Frontend/files/ lsampaio-minio-team@edge-minio-02.homelab:~/minio/02-Frontend/files/ &&
-  rsync -avh -e ssh /opt/certificates/edge-minio-01.homelab/{*.crt,*.key} lsampaio-minio-team@edge-minio-01.homelab:~/minio/02-Frontend/files/ &&
-  rsync -avh -e ssh /opt/certificates/edge-minio-01.homelab/{*.crt,*.key} lsampaio-minio-team@edge-minio-02.homelab:~/minio/02-Frontend/files/
+  rsync -avh -e ssh 01-Install/02-Frontend/files/ lsampaio-minio-team@edge-minio-01.lan.homelab:~/minio/02-Frontend/files/ &&
+  rsync -avh -e ssh 01-Install/02-Frontend/files/ lsampaio-minio-team@edge-minio-02.lan.homelab:~/minio/02-Frontend/files/ &&
+  rsync -avh -e ssh /opt/certificates/edge-minio-01.lan.homelab/{*.crt,*.key} lsampaio-minio-team@edge-minio-01.lan.homelab:~/minio/02-Frontend/files/ &&
+  rsync -avh -e ssh /opt/certificates/edge-minio-01.lan.homelab/{*.crt,*.key} lsampaio-minio-team@edge-minio-02.lan.homelab:~/minio/02-Frontend/files/
 
 02 - Install and setup Apache
   sudo apt install -y apache2 ssl-cert
@@ -55,8 +55,8 @@
   # sudo ufw allow 9000:9001/tcp
 
 04 - Access minio Dashboard.
-  Minio-S3-API: https://api.edge-minio-01.homelab
-  Minio-Console: https://edge-minio-01.homelab
+  Minio-S3-API: https://api.edge-minio-01.lan.homelab
+  Minio-Console: https://edge-minio-01.lan.homelab
 
-  Minio-S3-API: https://api.edge-minio-02.homelab
-  Minio-Console: https://edge-minio-02.homelab
+  Minio-S3-API: https://api.edge-minio-02.lan.homelab
+  Minio-Console: https://edge-minio-02.lan.homelab

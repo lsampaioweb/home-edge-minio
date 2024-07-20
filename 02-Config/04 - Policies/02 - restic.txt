@@ -42,7 +42,7 @@ nano restic-backup.txt
       Expiration: no-expiry
 
   # Execute this command if you want to create a short lived Access Key. I am not using like this.
-    curl -X POST https://api.edge-minio-01.homelab -d "Action=AssumeRoleWithLDAPIdentity&LDAPUsername=lsampaio-minio-team&LDAPPassword=PASSWORD-HERE&Version=2011-06-15" | xmllint --format -
+    curl -X POST https://api.edge-minio-01.lan.homelab -d "Action=AssumeRoleWithLDAPIdentity&LDAPUsername=lsampaio-minio-team&LDAPPassword=PASSWORD-HERE&Version=2011-06-15" | xmllint --format -
 
     # It is necessary to install xmllint.
       sudo apt install libxml2-utils

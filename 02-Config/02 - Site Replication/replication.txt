@@ -3,11 +3,11 @@
   mc admin cluster iam export local/
 
   Download the files
-    scp -r lsampaio-minio-team@edge-minio-01.homelab:~/local-bucket-metadata.zip 04-Backup/ &&
-    scp -r lsampaio-minio-team@edge-minio-01.homelab:~/local-iam-info.zip 04-Backup/
+    scp -r lsampaio-minio-team@edge-minio-01.lan.homelab:~/local-bucket-metadata.zip 04-Backup/ &&
+    scp -r lsampaio-minio-team@edge-minio-01.lan.homelab:~/local-iam-info.zip 04-Backup/
 
 02 - Set a alias to the remote MinIO instance
-  mc alias set remote https://api.edge-minio-02.homelab
+  mc alias set remote https://api.edge-minio-02.lan.homelab
   mc admin info remote
 
 03 - Add site replication configuration

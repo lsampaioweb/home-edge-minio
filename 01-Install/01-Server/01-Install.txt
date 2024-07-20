@@ -21,8 +21,8 @@
 
 02 - Copy all the necessary files to the server.
   mkdir -p ~/install-minio/01-Server/
-  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-01.homelab:~/install-minio/01-Server/files/ &&
-  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-02.homelab:~/install-minio/01-Server/files/
+  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-01.lan.homelab:~/install-minio/01-Server/files/ &&
+  rsync -avh -e ssh 01-Install/01-Server/files/ lsampaio-minio-team@edge-minio-02.lan.homelab:~/install-minio/01-Server/files/
 
 03 - Download the MinIO server’s latest .deb package
   Link: https://min.io/download#/linux

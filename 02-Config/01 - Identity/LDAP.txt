@@ -1,6 +1,6 @@
 GUI:
   Server Insecure       : Disabled
-  Server Address        : edge-ldap-01.homelab:636
+  Server Address        : edge-ldap-01.lan.homelab:636
 
   Lookup Bind DN        : cn=ldap-reader-minio,ou=people,dc=homelab
   Lookup Bind Password  : Keychain: "edge-minio-01-ldap-reader"
@@ -13,7 +13,7 @@ GUI:
 
 Terminal:
   mc idp ldap add local                                            \
-    server_addr=edge-ldap-01.homelab:636                           \
+    server_addr=edge-ldap-01.lan.homelab:636                           \
     lookup_bind_dn=cn=ldap-reader-minio,ou=people,dc=homelab       \
     lookup_bind_password=LDAP-PASSWORD-HERE                        \
     user_dn_search_base_dn=dc=homelab                              \
